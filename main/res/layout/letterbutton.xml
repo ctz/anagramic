@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button
+ xmlns:android="http://schemas.android.com/apk/res/android"
+ android:id="@+id/LetterButton"
+ android:textSize="32sp"
+ android:onClick="onSelectLetter"
+ android:layout_height="wrap_content"
+ android:layout_width="wrap_content"
+ android:width="64sp"
+ android:height="64sp"
+ android:background="@drawable/letterbuttongfx"
+ android:text="b" android:soundEffectsEnabled="true"/>

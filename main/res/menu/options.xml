@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:checkable="true" android:title="Sound effects"
+		android:id="@+id/menu_options_sound" android:icon="@+android:drawable/ic_lock_silent_mode_off"></item>
+	<item android:checkable="true" android:title="Animations"
+		android:id="@+id/menu_options_animations" android:icon="@+android:drawable/ic_menu_rotate"></item>
+	<item android:title="Cancel" android:id="@+id/menu_options_cancel"
+		android:icon="@+android:drawable/ic_menu_revert"></item>
+</menu>

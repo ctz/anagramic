@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anagramic</string>
+    <string name="upgrade_title">Upgrade for 47,754 games!</string>
+    <string name="upgraded_title">Thanks for upgrading!</string>
+</resources>

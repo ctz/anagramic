@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menu_give_up" android:title="Give up"
+		android:icon="@+android:drawable/ic_menu_delete"></item>
+		
+	<item android:id="@+id/menu_options" android:title="Options"
+		android:icon="@+android:drawable/ic_menu_manage"></item>
+
+	<item android:id="@+id/menu_end_game" android:title="End game"
+		android:icon="@+android:drawable/ic_menu_revert"></item>
+</menu>

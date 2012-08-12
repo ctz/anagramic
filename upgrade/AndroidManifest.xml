@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.ifihada.anagramic.upgrade"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="4" />
+
+    <application android:label="Anagramic Premium Key" android:hasCode="false" android:icon="@drawable/icon">
+
+    </application>
+</manifest>

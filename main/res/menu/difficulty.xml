@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<group android:checkableBehavior="single">
+		<item android:id="@+id/menu_diff_beginner" android:title="Beginner"
+			android:checkable="true"></item>
+		<item android:id="@+id/menu_diff_easy" android:title="Easy"
+			android:checkable="true"></item>
+		<item android:id="@+id/menu_diff_medium" android:title="Medium"
+			android:checkable="true"></item>
+		<item android:id="@+id/menu_diff_hard" android:title="Hard"
+			android:checkable="true"></item>
+		<item android:id="@+id/menu_diff_insane" android:title="Insane"
+			android:checkable="true"></item>
+	</group>
+</menu>

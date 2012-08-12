@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/MainLayout" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:orientation="vertical">
+	<com.ifihada.anagramic.WordButtonView android:id="@+id/SelectedLetterButtonLayout"
+		android:layout_width="wrap_content" android:layout_gravity="center_horizontal"
+		android:layout_height="64sp" android:layout_alignParentTop="true">
+	</com.ifihada.anagramic.WordButtonView>
+	<HorizontalScrollView android:id="@+id/FoundViewScroller"
+		android:layout_width="fill_parent" android:layout_below="@+id/SelectedLetterButtonLayout"
+		android:layout_above="@+id/SubmitButtonLayout" android:layout_height="wrap_content">
+		<com.ifihada.anagramic.FoundView android:id="@+id/FoundView"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	</HorizontalScrollView>
+	<RelativeLayout android:id="@+id/SubmitButtonLayout"
+		android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+		android:layout_width="wrap_content" android:layout_above="@+id/SelectLetterButtonLayout"
+		android:layout_centerHorizontal="true">
+		<ImageButton android:layout_height="64sp"
+			android:layout_width="64sp" android:id="@+id/PermuteButton"
+			android:onClick="onPermuteButton" android:background="@drawable/permutebutton"
+			android:layout_alignParentLeft="@+id/OKButton"
+			android:layout_centerVertical="true" android:soundEffectsEnabled="true" />
+		<TextView android:textSize="22sp" android:layout_marginLeft="2dp"
+			android:layout_width="wrap_content" android:shadowDx="0"
+			android:shadowColor="#cc000000" android:layout_height="wrap_content"
+			android:id="@+id/ScoreText" android:text="0 / 10" android:textColor="#fff"
+			android:shadowRadius="3" android:shadowDy="1"
+			android:layout_toRightOf="@+id/PermuteButton"
+			android:layout_alignTop="@+id/PermuteButton"
+			android:layout_centerVertical="true"></TextView>
+		<ImageButton android:layout_height="64sp"
+			android:layout_width="64sp" android:id="@+id/OKButton"
+			android:onClick="onSubmitButton" android:layout_alignParentRight="true"
+			android:background="@drawable/yesbutton" android:soundEffectsEnabled="true" />
+		<TextView android:layout_toLeftOf="@+id/OKButton"
+			android:layout_width="wrap_content" android:id="@+id/TimeText"
+			android:layout_height="wrap_content" android:text=""
+			android:layout_alignTop="@+id/OKButton" 
+			android:layout_centerVertical="true"
+			android:textSize="22sp" android:textColor="#fff" android:shadowDx="0"
+			android:shadowColor="#cc000000" android:shadowRadius="3"
+			android:shadowDy="1" android:layout_marginRight="2dp" />
+	</RelativeLayout>
+	<com.ifihada.anagramic.WordButtonView android:id="@+id/SelectLetterButtonLayout"
+		android:layout_height="64sp" android:layout_gravity="bottom|center_horizontal"
+		android:layout_width="fill_parent" android:layout_alignParentBottom="true">
+	</com.ifihada.anagramic.WordButtonView>
+</RelativeLayout>

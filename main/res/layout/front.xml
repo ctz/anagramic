@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/LinearLayout01" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:orientation="vertical">
+
+	<ScrollView android:id="@+id/ScrollView"
+		android:layout_height="fill_parent" android:layout_centerHorizontal="true"
+		android:layout_width="fill_parent">
+		<LinearLayout android:id="@+id/ScrollLayout"
+			android:layout_height="wrap_content" android:orientation="vertical"
+			android:layout_width="fill_parent">
+			<ImageView android:id="@+id/TitleText" android:src="@drawable/title"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"></ImageView>
+			<Button android:layout_width="250dp" android:layout_height="60dp"
+				android:id="@+id/ConundrumButton" android:drawableLeft="@drawable/conundrum"
+				android:text="Conundrum" android:background="@drawable/letterbuttongfx"
+				android:textSize="20dp" android:onClick="onStartConundrum"
+				android:layout_gravity="center_horizontal"
+				android:soundEffectsEnabled="true" />
+			<Button android:layout_width="250dp" android:layout_height="60dp"
+				android:id="@+id/TimedButton" android:drawableLeft="@drawable/timed"
+				android:text="Beat the clock" android:background="@drawable/letterbuttongfx"
+				android:textSize="20dp" android:onClick="onStartBeatTheClock"
+				android:layout_gravity="center_horizontal"
+				android:soundEffectsEnabled="true" />
+			<Button android:layout_width="250dp" android:layout_height="60dp"
+				android:id="@+id/FreeButton" android:drawableLeft="@drawable/free"
+				android:text="Free play" android:background="@drawable/letterbuttongfx"
+				android:textSize="20dp" android:onClick="onStartFreePlay"
+				android:layout_gravity="center_horizontal"
+				android:soundEffectsEnabled="true" />
+			<Button android:layout_height="50dp" android:id="@+id/UpgradeButton"
+				android:text="Upgrade" android:textSize="16dp" android:onClick="onUpgrade"
+				android:layout_width="250dp" android:layout_gravity="center_horizontal"
+				android:drawableLeft="@+android:drawable/ic_menu_add"
+				android:soundEffectsEnabled="true" />
+			<Button android:layout_height="50dp" android:id="@+id/StatsButton"
+				android:text="Statistics" android:textSize="16dp" android:onClick="onShowStatistics"
+				android:layout_width="250dp" android:layout_gravity="center_horizontal"
+				android:drawableLeft="@+android:drawable/ic_menu_sort_by_size"
+				android:soundEffectsEnabled="true" />
+			<Button android:layout_height="50dp" android:id="@+id/LevelButton"
+				android:text="Difficulty" android:textSize="16dp" android:onClick="onChangeDifficulty"
+				android:layout_width="250dp" android:layout_gravity="center_horizontal"
+				android:drawableLeft="@+android:drawable/ic_menu_info_details"
+				android:soundEffectsEnabled="true" />
+			<Button android:layout_height="50dp" android:id="@+id/OptionsButton"
+				android:text="Options" android:textSize="16dp" android:onClick="onChangeOptions"
+				android:drawableLeft="@+android:drawable/ic_menu_manage"
+				android:layout_width="250dp" android:layout_gravity="center_horizontal"
+				android:soundEffectsEnabled="true" />
+		</LinearLayout>
+	</ScrollView>
+</RelativeLayout>

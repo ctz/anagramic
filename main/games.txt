@@ -1,0 +1,32 @@
+easy/medium/hard:
+- countdown conundrum (only root word, 30 second time limit)
+- against the clock (all words, variable time limit)  
+- to completion (all words)
+
+clare's suggestions
+- change font of orange tiles to something bigger and bolder 
+- at end of game, screen goes back to menu too quickly.  leave words on screen until user clicks something to go back to menu
+- highlight whether the word is right or wrong better.  make box bigger and maybe colour word in red or green so that it can be seen in corner of eye
+- why isn't bap in dictionary?
+- give user a score like what percentage of words they found
+
+v1.1:
+- Fix crash when selecting a button twice quickly.
+- Hide completion text on conundrum mode.
+- Tweak sound to be less intrusive.
+- Extend dictionary to include plurals and inflections.
+- Conundrum mode does not allow submission of words without all letters.
+- At the end of all games, ask if you want another game (of the same mode and difficulty).
+- Don't allow submissions after the game ends.
+
+v1.2:
+- Fix rare end of round crash.
+
+v1.3:
+- Tweak found words view for certain scales.
+
+v1.4:
+- Correct preferences saving across game/front.
+- Slightly increase number of free games.
+- Prevent sequences of games choosing the same root word.
+- Add title graphic.
