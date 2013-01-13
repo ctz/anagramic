@@ -13,7 +13,7 @@ import android.view.View;
 class LayoutEngine
 {
 	static final int minFontSize = 18;
-	static final int maxFontSize = 32;
+	static final int maxFontSize = 64;
 	static final int pad = 3;
 	static final long timeout = 3000;
 	
@@ -151,7 +151,7 @@ class LayoutEngine
 	{
 		for (this.preferredFontSize = LayoutEngine.maxFontSize;
 			 this.preferredFontSize > LayoutEngine.minFontSize;
-			 this.preferredFontSize--)
+			 this.preferredFontSize -= 4)
 		{
 			this.tryLayout();
 			this.requiredWidth = this.currentWidth();
@@ -172,12 +172,17 @@ class LayoutEngine
 	
 	public void renderWord(Canvas c, WordToGuess w)
 	{
+	  String wordStr = w.word;
+	  
+	  if (GlobalSettings.useUpperCase)
+	    wordStr = wordStr.toUpperCase(GlobalSettings.locale);
+	  
 		if (w.cheated)
-			c.drawText(w.word, this.x, this.y + this.liOffs, this.cheatedStyle);
+			c.drawText(wordStr, this.x, this.y + this.liOffs, this.cheatedStyle);
 		else if (w.guessed && w.guessedAt + timeout > this.time)
-			c.drawText(w.word, this.x, this.y + this.liOffs, this.recentlyGuessedStyle);
+			c.drawText(wordStr, this.x, this.y + this.liOffs, this.recentlyGuessedStyle);
 		else if (w.guessed)
-			c.drawText(w.word, this.x, this.y + this.liOffs, this.guessedStyle);
+			c.drawText(wordStr, this.x, this.y + this.liOffs, this.guessedStyle);
 		else
 		{
 			for (int i = 0; i < w.word.length(); i++)

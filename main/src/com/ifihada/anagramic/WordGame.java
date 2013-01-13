@@ -313,6 +313,7 @@ public class WordGame
 	{
 		assert word.length() > 0;
 		assert word.length() < this.allwords.size();
+		word = word.toLowerCase(GlobalSettings.locale);
 			
 		WordToGuess wg = this.allwords.get(word.length()).get(word);
 		

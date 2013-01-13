@@ -42,8 +42,15 @@ public class WordButtonView extends AbsoluteLayout
 	private Button makeButton(LayoutInflater li, String c)
 	{
 		Button b = (Button) li.inflate(R.layout.letterbutton, null);
-		b.setText(String.valueOf(c));
+		if (GlobalSettings.useUpperCase)
+		  c = c.toUpperCase(GlobalSettings.locale);
+		b.setText(c);
 		return b;
+	}
+	
+	public void fixCase()
+	{
+	  this.reLayout();
 	}
 	
 	public void fillForSelect(LayoutInflater li, int n)
@@ -106,6 +113,12 @@ public class WordButtonView extends AbsoluteLayout
 		{
 			Button b = (Button) this.getChildAt(i);
 			b.setTextSize(TypedValue.COMPLEX_UNIT_SP, eachWidth < 60 ? 26 : 32);
+			String text = b.getText().toString();
+			if (GlobalSettings.useUpperCase)
+			  text = text.toUpperCase(GlobalSettings.locale);
+			else
+			  text = text.toLowerCase(GlobalSettings.locale);
+			b.setText(text);
 		}
 	}
 	
@@ -125,7 +138,7 @@ public class WordButtonView extends AbsoluteLayout
     		if (b.getVisibility() == View.VISIBLE)
     			sb.append(b.getText());
     	}
-    	return sb.toString();
+    	return sb.toString().toLowerCase(GlobalSettings.locale);
 	}
 	
 	public void permute()
@@ -265,6 +278,4 @@ public class WordButtonView extends AbsoluteLayout
 		}
 		return null;
 	}
-	
-	
 }

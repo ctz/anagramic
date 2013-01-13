@@ -15,26 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
-
 class CheckUpgradeAction implements Runnable
 {
   private WordGameFront act;
@@ -59,6 +39,7 @@ public class WordGameFront extends Activity
   public static final String ANIMATION_SETTING = "animation-on";
   public static final String FIRSTRUN_SETTING = "first-run";
   public static final String DIFFICULTY_SETTING = "difficulty";
+  public static final String UPPERCASE_SETTING = "upper-case";
   private static final String PREFS = "AnagramicPrefs";
   private SharedPreferences prefs;
   
@@ -104,7 +85,7 @@ public class WordGameFront extends Activity
   public void postDelayed(Runnable runner, int time)
   {
     /* Choose any view... */
-	this.findViewById(R.id.UpgradeButton).postDelayed(runner, time);
+    this.findViewById(R.id.UpgradeButton).postDelayed(runner, time);
   }
   
   public static SharedPreferences getPrefs(Activity a)
@@ -114,15 +95,14 @@ public class WordGameFront extends Activity
   
   private void syncPrefs()
   {
-    WordGameFront.syncPrefs(this, this.prefs.getBoolean(SOUND_SETTING, false),
-        this.prefs.getBoolean(ANIMATION_SETTING, false));
+    WordGameFront.syncPrefs(this, this.prefs);
   }
   
-  static void syncPrefs(Activity act, boolean sounds, boolean animations)
+  static void syncPrefs(Activity act, SharedPreferences prefs)
   {
     AudioManager audio = (AudioManager) act
         .getSystemService(Context.AUDIO_SERVICE);
-    if (sounds)
+    if (prefs.getBoolean(SOUND_SETTING, false))
     {
       SoundUtil.loadSounds(act.getBaseContext());
       audio.loadSoundEffects();
@@ -132,7 +112,8 @@ public class WordGameFront extends Activity
       audio.unloadSoundEffects();
     }
     
-    AnimationUtil.animationEnabled = animations;
+    AnimationUtil.animationEnabled = prefs.getBoolean(ANIMATION_SETTING, false);
+    GlobalSettings.useUpperCase = prefs.getBoolean(UPPERCASE_SETTING, false);
   }
   
   @Override
@@ -186,6 +167,16 @@ public class WordGameFront extends Activity
     this.startActivityForResult(i, 0);
   }
   
+  public static void initOptionsMenu(ContextMenu menu, SharedPreferences prefs)
+  {
+    menu.findItem(R.id.menu_options_sound).setChecked(
+        prefs.getBoolean(SOUND_SETTING, true));
+    menu.findItem(R.id.menu_options_animations).setChecked(
+        prefs.getBoolean(ANIMATION_SETTING, true));
+    menu.findItem(R.id.menu_options_upper).setChecked(
+        prefs.getBoolean(UPPERCASE_SETTING, false));
+  }
+  
   @Override
   public void onCreateContextMenu(ContextMenu menu, View v,
       ContextMenu.ContextMenuInfo menuInfo)
@@ -216,10 +207,8 @@ public class WordGameFront extends Activity
     } else if (v == this.findViewById(R.id.OptionsButton))
     {
       this.getMenuInflater().inflate(R.menu.options, menu);
-      menu.findItem(R.id.menu_options_sound).setChecked(
-          this.prefs.getBoolean(SOUND_SETTING, true));
-      menu.findItem(R.id.menu_options_animations).setChecked(
-          this.prefs.getBoolean(ANIMATION_SETTING, true));
+      WordGameFront.initOptionsMenu(menu, this.prefs);
+    		  	
     } else
     {
       assert false;
@@ -260,8 +249,49 @@ public class WordGameFront extends Activity
               !this.prefs.getBoolean(ANIMATION_SETTING, true)).commit();
       this.syncPrefs();
       return true;
+    case R.id.menu_options_upper:
+      this.prefs
+          .edit()
+          .putBoolean(UPPERCASE_SETTING,
+              !this.prefs.getBoolean(UPPERCASE_SETTING, false))
+          .commit();
+      this.syncPrefs();
+      return true;
     }
     return super.onContextItemSelected(item);
+  }
+  
+  public static void toggleSoundOption(Activity a)
+  {
+    SharedPreferences prefs = WordGameFront.getPrefs(a);
+    prefs
+      .edit()
+      .putBoolean(WordGameFront.SOUND_SETTING,
+          !prefs.getBoolean(WordGameFront.SOUND_SETTING, true))
+      .commit();
+    WordGameFront.syncPrefs(a, prefs);
+  }
+  
+  public static void toggleAnimationOption(Activity a)
+  {
+    SharedPreferences prefs = WordGameFront.getPrefs(a);
+    prefs
+      .edit()
+      .putBoolean(WordGameFront.ANIMATION_SETTING,
+          !prefs.getBoolean(WordGameFront.ANIMATION_SETTING, true))
+      .commit();
+    WordGameFront.syncPrefs(a, prefs);
+  }
+  
+  public static void toggleUppercaseOption(Activity a)
+  {
+    SharedPreferences prefs = WordGameFront.getPrefs(a);
+    prefs
+      .edit()
+      .putBoolean(WordGameFront.UPPERCASE_SETTING,
+          !prefs.getBoolean(WordGameFront.UPPERCASE_SETTING, true))
+      .commit();
+    WordGameFront.syncPrefs(a, prefs);
   }
   
   public void onChangeDifficulty(View v)

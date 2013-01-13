@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:checkable="true" android:title="Sound effects"
-		android:id="@+id/menu_options_sound" android:icon="@+android:drawable/ic_lock_silent_mode_off"></item>
-	<item android:checkable="true" android:title="Animations"
-		android:id="@+id/menu_options_animations" android:icon="@+android:drawable/ic_menu_rotate"></item>
-	<item android:title="Cancel" android:id="@+id/menu_options_cancel"
-		android:icon="@+android:drawable/ic_menu_revert"></item>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_options_sound"
+        android:checkable="true"
+        android:icon="@+android:drawable/ic_lock_silent_mode_off"
+        android:title="Sound effects">
+    </item>
+    <item
+        android:id="@+id/menu_options_animations"
+        android:checkable="true"
+        android:icon="@+android:drawable/ic_menu_rotate"
+        android:title="Animations">
+    </item>
+    <item
+        android:id="@+id/menu_options_upper"
+        android:checkable="true"
+        android:icon="@+android:drawable/ic_menu_sort_alphabetically"
+        android:title="Use upper-case letters"
+        android:titleCondensed="Upper-case">
+    </item>
+    <item
+        android:id="@+id/menu_options_cancel"
+        android:icon="@+android:drawable/ic_menu_revert"
+        android:title="Cancel">
+    </item>
+
 </menu>

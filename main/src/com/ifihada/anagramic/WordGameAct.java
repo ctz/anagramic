@@ -204,10 +204,7 @@ public class WordGameAct extends Activity
   {
     this.getMenuInflater().inflate(R.menu.options, menu);
     SharedPreferences prefs = WordGameFront.getPrefs(this);
-    menu.findItem(R.id.menu_options_sound).setChecked(
-        prefs.getBoolean(WordGameFront.SOUND_SETTING, true));
-    menu.findItem(R.id.menu_options_animations).setChecked(
-        prefs.getBoolean(WordGameFront.ANIMATION_SETTING, true));
+    WordGameFront.initOptionsMenu(menu, prefs);
   }
   
   @Override
@@ -241,28 +238,19 @@ public class WordGameAct extends Activity
   @Override
   public boolean onContextItemSelected(MenuItem item)
   {
-    SharedPreferences prefs = WordGameFront.getPrefs(this);
     switch (item.getItemId())
     {
     case R.id.menu_options_sound:
-      prefs
-          .edit()
-          .putBoolean(WordGameFront.SOUND_SETTING,
-              !prefs.getBoolean(WordGameFront.SOUND_SETTING, true))
-          .commit();
-      WordGameFront.syncPrefs(this,
-          prefs.getBoolean(WordGameFront.SOUND_SETTING, false),
-          prefs.getBoolean(WordGameFront.ANIMATION_SETTING, false));
+      WordGameFront.toggleSoundOption(this);
       return true;
     case R.id.menu_options_animations:
-      prefs
-          .edit()
-          .putBoolean(WordGameFront.ANIMATION_SETTING,
-              !prefs.getBoolean(WordGameFront.ANIMATION_SETTING, true))
-          .commit();
-      WordGameFront.syncPrefs(this,
-          prefs.getBoolean(WordGameFront.SOUND_SETTING, false),
-          prefs.getBoolean(WordGameFront.ANIMATION_SETTING, false));
+      WordGameFront.toggleAnimationOption(this);
+      return true;
+    case R.id.menu_options_upper:
+      WordGameFront.toggleUppercaseOption(this);
+      this.foundView.invalidate();
+      this.selectedContainer.fixCase();
+      this.buttonContainer.fixCase();
       return true;
     }
     return super.onContextItemSelected(item);
@@ -383,7 +371,7 @@ public class WordGameAct extends Activity
       this.game.cheat();
       this.foundView.invalidate();
     }
-    this.postDelayed(new EndGameAction(this), this.won ? 5000 : 8000);
+    this.postDelayed(new EndGameAction(this), this.won ? 3000 : 5000);
     this.finished = true;
   }
   
@@ -412,7 +400,9 @@ public class WordGameAct extends Activity
     char c = ev.getDisplayLabel();
     if (c >= 'A' && c <= 'Z')
     {
-      String s = String.valueOf(c).toLowerCase();
+      String s = String.valueOf(c).toLowerCase(GlobalSettings.locale);
+      if (GlobalSettings.useUpperCase)
+        s = s.toUpperCase(GlobalSettings.locale);
       Button b = this.buttonContainer.findWithLabel(s);
       if (b == null)
       {
