@@ -15,6 +15,43 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Display;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
+
+class CheckUpgradeAction implements Runnable
+{
+  private WordGameFront act;
+  static final int TIME_MS = 10 * 1000;
+  
+  public CheckUpgradeAction(WordGameFront act)
+  {
+    this.act = act;
+  }
+  
+  public void run()
+  {
+    this.act.possiblyUpgrade();
+    this.act.postDelayed(this, CheckUpgradeAction.TIME_MS);
+  }
+}
+
 public class WordGameFront extends Activity
 {
   private static final String TAG = "WordGameFront";
@@ -64,6 +101,12 @@ public class WordGameFront extends Activity
     Log.v(TAG, "upgraded games = " + upgraded);
   }
   
+  public void postDelayed(Runnable runner, int time)
+  {
+    /* Choose any view... */
+	this.findViewById(R.id.UpgradeButton).postDelayed(runner, time);
+  }
+  
   public static SharedPreferences getPrefs(Activity a)
   {
     return a.getSharedPreferences(WordGameFront.PREFS, Activity.MODE_PRIVATE);
@@ -104,6 +147,7 @@ public class WordGameFront extends Activity
   {
     super.onResume();
     this.possiblyUpgrade();
+    new CheckUpgradeAction(this).run();
   }
   
   public void possiblyUpgrade()
