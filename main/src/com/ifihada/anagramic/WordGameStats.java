@@ -100,7 +100,7 @@ class Stats implements java.io.Serializable
 		final Stats s = Stats.getInstance();
 		s.gamesWon++;
 		s.winsByMode[mode]++;
-		s.winsByDiff[mode]++;
+		s.winsByDiff[difficulty]++;
 	}
 	
 	public static void timerStart()
