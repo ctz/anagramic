@@ -2,7 +2,6 @@ package com.ifihada.anagramic;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,8 +105,6 @@ public class WordButtonView extends AbsoluteLayout
 			lp.width = eachWidth;
 			lp.x = eachWidth * i;
 		}
-		
-		Log.v("test", "test " + eachWidth);
 		
 		for (int i = 0; i < n; i++)
 		{

@@ -1,11 +1,15 @@
 package com.ifihada.anagramic;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +18,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 class CheckUpgradeAction implements Runnable
 {
@@ -128,6 +133,7 @@ public class WordGameFront extends Activity
   {
     super.onResume();
     this.possiblyUpgrade();
+    this.updateSavedGames();
     new CheckUpgradeAction(this).run();
   }
   
@@ -140,31 +146,86 @@ public class WordGameFront extends Activity
     }
   }
   
-  public void onStartConundrum(View v)
+  private void updateSavedGames()
+  {
+    showSavedGameFlash(R.id.ConundrumButton, ExistingGame.exists(this, WordGame.CONUNDRUM));
+    showSavedGameFlash(R.id.TimedButton, ExistingGame.exists(this, WordGame.AGAINST_CLOCK));
+    showSavedGameFlash(R.id.FreeButton, ExistingGame.exists(this, WordGame.FREE_PLAY));
+  }
+  
+  private void showSavedGameFlash(int id, boolean show)
+  {
+    Button b = (Button) findViewById(id);
+    Drawable bd[] = b.getCompoundDrawables();
+    if (show)
+      bd[2] = this.getResources().getDrawable(android.R.drawable.ic_menu_save);
+    else
+      bd[2] = null;
+    b.setCompoundDrawablesWithIntrinsicBounds(bd[0], bd[1], bd[2], bd[3]);
+  }
+  
+  @Override
+  public Dialog onCreateDialog(final int gametype)
+  {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setMessage("Resume existing game?").setCancelable(false)
+        .setTitle("Saved game")
+        .setIcon(android.R.drawable.ic_menu_save)
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int id)
+          {
+            WordGameFront.this.resumeGame(gametype);
+          }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int id)
+          {
+            ExistingGame.discard(WordGameFront.this, gametype);
+            WordGameFront.this.startNewGame(gametype);
+          }
+        });
+    return builder.create();
+  }
+  
+  private void startNewGame(int type)
   {
     Intent i = new Intent(this, WordGameAct.class);
-    i.putExtra(WordGameAct.GAMETYPE, WordGame.CONUNDRUM);
+    i.putExtra(WordGameAct.GAMETYPE, type);
     i.putExtra(WordGameAct.DIFFICULTY,
         this.prefs.getInt(DIFFICULTY_SETTING, WordGame.EASY));
     this.startActivityForResult(i, 0);
+  }
+  
+  private void resumeGame(int type)
+  {
+    Intent i = new Intent(this, WordGameAct.class);
+    i.putExtra(WordGameAct.GAMETYPE, type);
+    i.putExtra(WordGameAct.RESUME, true);
+    this.startActivityForResult(i, 0);
+  }
+  
+  private void startOrResume(int type)
+  {
+    if (ExistingGame.exists(this, type))
+    {
+      this.showDialog(type);
+    } else {
+      this.startNewGame(type);
+    }
+  }
+  
+  public void onStartConundrum(View v)
+  {
+    this.startOrResume(WordGame.CONUNDRUM);
   }
   
   public void onStartBeatTheClock(View v)
   {
-    Intent i = new Intent(this, WordGameAct.class);
-    i.putExtra(WordGameAct.GAMETYPE, WordGame.AGAINST_CLOCK);
-    i.putExtra(WordGameAct.DIFFICULTY,
-        this.prefs.getInt(DIFFICULTY_SETTING, WordGame.EASY));
-    this.startActivityForResult(i, 0);
+    this.startOrResume(WordGame.AGAINST_CLOCK);
   }
   
   public void onStartFreePlay(View v)
   {
-    Intent i = new Intent(this, WordGameAct.class);
-    i.putExtra(WordGameAct.GAMETYPE, WordGame.FREE_PLAY);
-    i.putExtra(WordGameAct.DIFFICULTY,
-        this.prefs.getInt(DIFFICULTY_SETTING, WordGame.EASY));
-    this.startActivityForResult(i, 0);
+    this.startOrResume(WordGame.FREE_PLAY);
   }
   
   public static void initOptionsMenu(ContextMenu menu, SharedPreferences prefs)

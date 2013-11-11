@@ -1,5 +1,6 @@
 package com.ifihada.anagramic;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -56,6 +57,7 @@ public class WordGameAct extends Activity
 {
   private static final String TAG = "WordGameAct";
   public static final String GAMETYPE = "gametype";
+  public static final String RESUME = "resume";
   public static final String DIFFICULTY = "difficulty";
   public static final String ROOTWORD = "root-wood";
   public static final String FOUNDWORDS = "found-words";
@@ -85,6 +87,7 @@ public class WordGameAct extends Activity
     tua.run();
   }
   
+  @SuppressLint("DefaultLocale")
   public void tick()
   {
     if (this.game.config.hasTime && !this.paused && !this.finished)
@@ -119,14 +122,23 @@ public class WordGameAct extends Activity
     this.scoreView = (TextView) this.findViewById(R.id.ScoreText);
     this.timeView = (TextView) this.findViewById(R.id.TimeText);
     this.paused = true;
-    
-    if (state != null)
+        
+    if (this.getIntent() != null && this.getIntent().getBooleanExtra(WordGameAct.RESUME, false))
     {
+      Intent i = this.getIntent();
+      this.requestedGame = i.getIntExtra(WordGameAct.GAMETYPE, 0);
+      ExistingGame eg = ExistingGame.fetch(this, this.requestedGame);
+      this.requestedDifficulty = eg.difficulty;
+      this.buildGame(this.requestedGame,
+                     this.requestedDifficulty,
+                     eg.rootword,
+                     eg.found,
+                     eg.timeleft);
+    } else if (state != null) {
       this.requestedGame = state.getInt(WordGameAct.GAMETYPE);
       this.requestedDifficulty = state.getInt(WordGameAct.DIFFICULTY);
       this.buildGame(state);
-    } else
-    {
+    } else {
       Intent i = this.getIntent();
       if (i != null)
       {
@@ -144,6 +156,10 @@ public class WordGameAct extends Activity
   {
     super.onResume();
     Stats.timerStart();
+    if (this.finished)
+      ExistingGame.discard(this, this.game.config.type);
+    else
+      ExistingGame.store(this, this.game);
     this.paused = false;
   }
   
@@ -153,15 +169,26 @@ public class WordGameAct extends Activity
     super.onPause();
     Stats.timerPause();
     Stats.save(this.getBaseContext());
+    if (this.finished)
+      ExistingGame.discard(this, this.game.config.type);
+    else
+      ExistingGame.store(this, this.game);
     this.paused = true;
   }
   
   private void buildGame(Bundle state)
   {
-    this.game = new WordGame(WordGame.makeConfig(this.requestedGame,
-        this.requestedDifficulty), state.getString(WordGameAct.ROOTWORD),
-        state.getString(WordGameAct.FOUNDWORDS),
-        state.getInt(WordGameAct.TIMELEFT));
+    this.buildGame(this.requestedGame,
+                   this.requestedDifficulty,
+                   state.getString(WordGameAct.ROOTWORD),
+                   state.getString(WordGameAct.FOUNDWORDS),
+                   state.getInt(WordGameAct.TIMELEFT));
+  }
+  
+  private void buildGame(int type, int difficulty, String root, String found, int timeleft)
+  {
+    this.game = new WordGame(WordGame.makeConfig(type, difficulty),
+                             root, found, timeleft);
   }
   
   private void chooseGame()
